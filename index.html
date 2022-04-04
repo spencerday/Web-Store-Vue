@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>replit</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <!-- development version -->
+    <script src="https://unpkg.com/vue@3"></script>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1><a id="home" @click="isProductPage = true">Band Apparel</a></h1>
+        <button id="cart" @click="isProductPage = !isProductPage">Cart ({{ cartLen }})</button>
+        <p>({{ numItems }} Items Available)</p>
+      </header>
+      <div class="prodPage" v-for="prod in products" v-if="isProductPage" >
+        <div :class="prod.type">
+          <h2 :style="{ 'text-transform': prod.titleStyle }"> {{ prod.title }}  </h2>
+          <img :src="prod.image">
+          <p v-html="prod.description"></p>
+          <br>
+          <p>Price: ${{ prod.price }}</p>
+          <p> {{ displayAvailable(prod) }} </p>
+          <button @click="addToCart(prod)" :disabled="outOfStock(prod)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="checkoutPage" v-else >
+        <div class="cart_item" v-for="(value, name) in cart" >
+          <img :src="cartImg(name)">
+          <p> {{ displayCart(name, value) }} </p>
+          <button @click="removeItem(name, value)" >Remove Item</button>
+        </div>
+        <p id="total" v-if="cartLen > 0">Cart Total: ${{ totalPrice }}</p>
+        <p id="empty" v-else>Cart Is Empty!</p>
+      </div>
+    </div>
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
